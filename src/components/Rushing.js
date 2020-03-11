@@ -1,44 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { get } from '../network';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 const schema = [{
         dataField: 'Player',
         text: 'Player'
     }, {
         dataField: 'Team',
-        text: 'Team'
+        text: 'Team',
     }, {
         dataField: 'Pos',
-        text: 'Position'
+        text: 'Pos'
     }, {
         dataField: 'Att',
-        text: 'Rushing Attempts'
+        text: 'Att'
     }, {
         dataField: 'Att/G',
-        text: 'Rushing Attempts Per Game Average'
+        text: 'Att/G'
     }, {
         dataField: 'Yds',
-        text: 'Total Yards'
+        text: 'Yds',
+        sort: true
     }, {
         dataField: 'Avg',
-        text: 'Average Yards Per Attempt'
+        text: 'Avg'
     }, {
         dataField: 'Yds/G',
-        text: 'Yards Per Game'
+        text: 'Yds/G'
     }, {
         dataField: 'TD',
-        text: 'Total Touchdowns'
+        text: 'TD',
+        sort: true
     }, {
         dataField: 'Lng',
-        text: 'Longest Rush'
+        text: 'Lng',
+        sort: true
     }, {
         dataField: '1st',
-        text: 'First Downs'
+        text: '1st'
     }, {
         dataField: '1st%',
-        text: 'First Down Percentage'
+        text: '1st%'
     }, {
         dataField: '20+',
         text: '20+ Yards'
@@ -53,13 +58,17 @@ const schema = [{
 function Rushing() {
     const [records, setRecords] = useState([]);
 
-    get('/rushing.json')
-         // add integer index column
-        .then(xs => xs.map((x, i) => Object.assign(x, {id: i})))
-        .then(setRecords);
+    useEffect(() => {
+        get('/rushing.json')
+             // add integer index column
+            .then(xs => xs.map((x, i) => Object.assign(x, {id: i})))
+            .then(setRecords);
+    }, [])
+
 
     return (
         <BootstrapTable
+            bootstrap4
             keyField="id"
             data={records}
             columns={schema}
