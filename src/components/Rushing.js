@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { get } from '../network';
 import BootstrapTable from 'react-bootstrap-table-next';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
 
 const schema = [{
         dataField: 'Player',
-        text: 'Player'
+        text: 'Player',
+        filter: textFilter()
+
     }, {
         dataField: 'Team',
         text: 'Team',
@@ -65,15 +70,22 @@ function Rushing() {
             .then(setRecords);
     }, [])
 
-
     return (
-        <BootstrapTable
-            bootstrap4
+        <ToolkitProvider
             keyField="id"
             data={records}
             columns={schema}
-            pagination={paginationFactory()}
-        />
+        >
+            {
+                props =>
+                    <BootstrapTable
+                        bootstrap4
+                        {...props.baseProps}
+                        pagination={paginationFactory()}
+                        filter={filterFactory()}
+                    />
+            }
+        </ToolkitProvider>
     );
 }
 
