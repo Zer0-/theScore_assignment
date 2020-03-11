@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { get } from '../network';
 import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 const schema = [{
         dataField: 'Player',
@@ -45,7 +46,7 @@ const schema = [{
         dataField: '40+',
         text: '40+ Yards'
     }, {
-        dataField: 'Fum',
+        dataField: 'FUM',
         text: 'Fumbles'
     }];
 
@@ -62,6 +63,7 @@ function Rushing() {
             keyField="id"
             data={records}
             columns={schema}
+            pagination={paginationFactory()}
         />
     );
 }
