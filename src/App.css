@@ -5,3 +5,30 @@
  * The mobile view really sucks with large tables.
  * Here is an idea: https://css-tricks.com/responsive-data-tables/
  */
+
+
+/*
+ * carets to show the up/down sort arrows were using bootstrap v3 styles
+ * and were removed in v4 so re-add it for compatability
+ */
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 4px solid;
+}
+
+.dropup .caret {
+    content: "";
+    border-top: none;
+    border-bottom: 4px solid;
+}
+
+.dropdown .caret {
+    content: "";
+    border-bottom: none;
+    border-top: 4px solid;
+}
