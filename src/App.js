@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-      <Container fluid={true} className="mainContainer">
+      <Container fluid={true} className="mainContainer mt-4">
           <Rushing/>
       </Container>
   );

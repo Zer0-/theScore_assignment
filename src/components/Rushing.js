@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { get } from '../network';
 import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
+
+const { ExportCSVButton } = CSVExport;
 
 const schema = [{
         dataField: 'Player',
@@ -71,21 +73,32 @@ function Rushing() {
     }, [])
 
     return (
-        <ToolkitProvider
-            keyField="id"
-            data={records}
-            columns={schema}
-        >
-            {
-                props =>
-                    <BootstrapTable
-                        bootstrap4
-                        {...props.baseProps}
-                        pagination={paginationFactory()}
-                        filter={filterFactory()}
-                    />
-            }
-        </ToolkitProvider>
+        <div>
+            <ToolkitProvider
+                keyField="id"
+                data={ records }
+                columns={ schema }
+                exportCSV={ { onlyExportFiltered: true, exportAll: false } }
+            >
+                {
+                    props =>
+                        <div>
+                            <ExportCSVButton
+                                { ...props.csvProps }
+                                className="btn-secondary mb-4"
+                            >
+                                Export CSV
+                            </ExportCSVButton>
+                            <BootstrapTable
+                                bootstrap4
+                                { ...props.baseProps }
+                                pagination={ paginationFactory() }
+                                filter={ filterFactory() }
+                            />
+                        </div>
+                }
+            </ToolkitProvider>
+        </div>
     );
 }
 

@@ -1,3 +1,7 @@
 .mainContainer {
   min-width: 80em;
 }
+/*
+ * The mobile view really sucks with large tables.
+ * Here is an idea: https://css-tricks.com/responsive-data-tables/
+ */
