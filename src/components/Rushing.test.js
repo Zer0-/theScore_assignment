@@ -1,6 +1,6 @@
 import assert from 'assert';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitForDomChange } from '@testing-library/react';
 import { RushingTable } from './Rushing';
 import FileSaver from 'file-saver';
 
@@ -112,14 +112,20 @@ it('export ordered content', () => {
 });
 
 it('export searched content', () => {
-    const { getByText, getByPlaceholderText } = render(
+    const { container, getByText, getByPlaceholderText } = render(
         <RushingTable records={mockrecords}/>
     );
     const btn_export = getByText('Export CSV');
     const search_input = getByPlaceholderText('Enter Player...');
     expect(search_input).toBeInTheDocument();
+
+    jest.useFakeTimers();
+
     fireEvent.change(search_input, { target: { value: 'B' } });
-    fireEvent.click(btn_export);
-    const csv = FileSaver.saveAs.mock.calls[0][0].content[0];
-    assert.deepEqual(getYds(csv), [2]);
+    setTimeout(() => {
+        fireEvent.click(btn_export);
+        const csv = FileSaver.saveAs.mock.calls[0][0].content[0];
+        console.log(csv);
+        assert.deepEqual(getYds(csv), [2]);
+    }, 1000);
 });

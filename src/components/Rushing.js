@@ -11,10 +11,10 @@ import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 
 const { ExportCSVButton } = CSVExport;
 
-const schema = [{
+const schema = filterfunc => [{
         dataField: 'Player',
         text: 'Player',
-        filter: textFilter()
+        filter: filterfunc
 
     }, {
         dataField: 'Team',
@@ -63,20 +63,6 @@ const schema = [{
         text: 'Fumbles'
     }];
 
-function BtnCsvExport({ products, onExport }) {
-    function onClick() {
-        onExport();
-    }
-
-    return (
-        <button
-            className="btn btn-secondary mb-4"
-            onClick={onClick}
-        >
-            Export CSV
-        </button>
-    );
-}
 
 function Rushing() {
     const [records, setRecords] = useState([]);
@@ -94,13 +80,26 @@ function Rushing() {
 }
 
 export const RushingTable = ({ records }) => {
+    const [filterVal, setFilterVal] = useState('');
+
+    let filterVal_ = '';
+
+    function onfilterchange(val) {
+        filterVal_ = val;
+    }
+
+    useEffect(() => setFilterVal(filterVal_), [filterVal_]);
+
     return (
         <ToolkitProvider
             bootstrap4
             keyField="id"
             data={ records }
-            columns={ schema }
-            exportCSV={ { exportAll: false } }
+            columns={ schema(textFilter({ onFilter: onfilterchange })) }
+            exportCSV={{
+                onlyExportFiltered: !!filterVal,
+                exportAll: false
+            }}
         >
             {
                 props =>
@@ -123,7 +122,8 @@ export const RushingTable = ({ records }) => {
 }
 
 RushingTable.propTypes = {
-    records: PropTypes.array
+    records: PropTypes.array.isRequired,
+    filterDelay: PropTypes.number
 }
 
 export default Rushing;
