@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { get } from '../network';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
@@ -62,6 +63,21 @@ const schema = [{
         text: 'Fumbles'
     }];
 
+function BtnCsvExport({ products, onExport }) {
+    function onClick() {
+        onExport();
+    }
+
+    return (
+        <button
+            className="btn btn-secondary mb-4"
+            onClick={onClick}
+        >
+            Export CSV
+        </button>
+    );
+}
+
 function Rushing() {
     const [records, setRecords] = useState([]);
 
@@ -73,33 +89,41 @@ function Rushing() {
     }, [])
 
     return (
-        <div>
-            <ToolkitProvider
-                keyField="id"
-                data={ records }
-                columns={ schema }
-                exportCSV={ { onlyExportFiltered: true, exportAll: false } }
-            >
-                {
-                    props =>
-                        <div>
-                            <ExportCSVButton
-                                { ...props.csvProps }
-                                className="btn-secondary mb-4"
-                            >
-                                Export CSV
-                            </ExportCSVButton>
-                            <BootstrapTable
-                                bootstrap4
-                                { ...props.baseProps }
-                                pagination={ paginationFactory() }
-                                filter={ filterFactory() }
-                            />
-                        </div>
-                }
-            </ToolkitProvider>
-        </div>
+        <RushingTable records={records}/>
     );
+}
+
+export const RushingTable = ({ records }) => {
+    return (
+        <ToolkitProvider
+            bootstrap4
+            keyField="id"
+            data={ records }
+            columns={ schema }
+            exportCSV={ { exportAll: false } }
+        >
+            {
+                props =>
+                    <div>
+                        <ExportCSVButton
+                            { ...props.csvProps }
+                            className="btn-secondary mb-4"
+                        >
+                            Export CSV
+                        </ExportCSVButton>
+                        <BootstrapTable
+                            { ...props.baseProps }
+                            pagination={ paginationFactory() }
+                            filter={ filterFactory() }
+                        />
+                    </div>
+            }
+        </ToolkitProvider>
+    );
+}
+
+RushingTable.propTypes = {
+    records: PropTypes.array
 }
 
 export default Rushing;
