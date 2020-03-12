@@ -1,3 +1,16 @@
+## Installation
+
+This program waws built and tested under NixOS. It may build on other
+systems running the Nix package manager, which you can install with
+
+```bash
+curl https://nixos.org/nix/install | sh
+```
+
+To build and run application on port 8000 run `nix-shell` in the source directory.
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
